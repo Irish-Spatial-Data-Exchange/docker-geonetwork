@@ -11,15 +11,12 @@ RUN DISTRIB_CODENAME=$(cat /etc/*release* | grep DISTRIB_CODENAME | cut -f2 -d'=
     && echo "deb http://archive.ubuntu.com/ubuntu ${DISTRIB_CODENAME}-updates main universe\n" >> /etc/apt/sources.list \
     && echo "deb http://security.ubuntu.com/ubuntu ${DISTRIB_CODENAME}-security main universe\n" >> /etc/apt/sources.list
 
-RUN apt-get update -qqy \
-    && apt-get -qqy --no-install-recommends install software-properties-common \
-    && add-apt-repository -y ppa:git-core/ppa
+
 
 # Workspace packages
 RUN apt-get update -qqy \
-    && apt-get -qqy --no-install-recommends install \
-    openssh-client ssh-askpass\
-    ca-certificates \
+    && apt-get -qqy --no-install-recommends install software-properties-common \
+    && add-apt-repository -y ppa:git-core/ppa \
     openjdk-8-jdk \
     tar zip unzip \
     wget curl \
@@ -60,7 +57,7 @@ RUN curl -fsSL https://www.apache.org/dist/ant/binaries/apache-ant-$ANT_VERSION-
 
 # ENV ANT_HOME /usr/share/ant
 
-# # clone MI Data Catalogue data.marine.ie Repo 
+# # clone custom Repo (e.g. own organisation flavour)
 # WORKDIR /usr/share/
 
 # RUN git clone --recurse-submodules https://github.com/IrishMarineInstitute/data.marine.ie.git data-catalogue

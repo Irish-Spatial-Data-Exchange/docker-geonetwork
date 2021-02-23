@@ -1,0 +1,41 @@
+# base image
+FROM tomcat:latest
+LABEL maintainer="Andrew Conway <andrew.conway@marine.ie>"
+
+# add custom apt-get sources
+RUN DISTRIB_CODENAME=$(cat /etc/*release* | grep DISTRIB_CODENAME | cut -f2 -d'=') \
+    && echo "deb http://archive.ubuntu.com/ubuntu ${DISTRIB_CODENAME} main universe\n" > /etc/apt/sources.list \
+    && echo "deb http://archive.ubuntu.com/ubuntu ${DISTRIB_CODENAME}-updates main universe\n" >> /etc/apt/sources.list \
+    && echo "deb http://security.ubuntu.com/ubuntu ${DISTRIB_CODENAME}-security main universe\n" >> /etc/apt/sources.list
+
+# Standard Workspace packages
+RUN apt-get update -qqy \
+    && apt-get -qqy --no-install-recommends install software-properties-common \
+    && add-apt-repository -y ppa:git-core/ppa \
+    openssh-client ssh-askpass\
+    ca-certificates \
+    tar zip unzip \
+    wget curl \
+    git \
+    build-essential \
+    less nano \
+    rsync \
+    # Set environment variables
+    ENV GN_FILE geonetwork.war
+ENV BASE_DIR /usr/local/tomcat
+
+# Set working directory
+WORKDIR $BASE_DIR/webapps
+
+# War file of updated GeoNetwork copied into container or using cURL or git clone
+# COPY host_location $BASE_DIR/webapps/
+
+# War file unzipped
+RUN mkdir -p $BASE_DIR/webapps/geonetwork && \
+    unzip -e $BASE_DIR/webapps/$GN_FILE -d $BASE_DIR/webapps/geonetwork
+
+EXPOSE 8080
+
+# Set geonetwork data directory
+COPY ./docker-entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
