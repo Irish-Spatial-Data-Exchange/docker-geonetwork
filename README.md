@@ -8,7 +8,7 @@ Container WAR File Location: \geonetwork\web\target.
 
 ## Detailed Build Steps
 
-**IMPORTANT: Any files included in this github repository must be included in the 'mi_geonetwork_build' maven config script, otherwise files will not be picked up by the build. Ensure your files are included in the build script before starting a build.**
+**IMPORTANT: Any files included in this github repository must be included in the 'geonetwork_build' maven config script (if you have one), otherwise files will not be picked up by the build. Ensure your files are included in the build script before starting a build.**
 
 Run the following:
 
@@ -18,7 +18,7 @@ Run the commands:
 
 - `git clone --recurse-submodules https://github.com/geonetwork/core-geonetwork.git geonetwork`
 - `cd geonetwork`
-- `git checkout tags/3.4.2 -b build`
+- `git checkout tags/3.10.6 -b build`
 - `git status`
 
 Run a clean build by running the command:
@@ -38,10 +38,10 @@ Run commands:
 - `git submodule add https://github.com/metadata101/iso19139.sdn-csr.git`
 - `git submodule add https://github.com/metadata101/iso19139.sdn-cdi.git`
 
-Navigate to the data-catalogue repository and run the MI script: mi_geonetwork_build.xml. This is an ant build script and will copy all required MI content into the build branch of the geonetwork repository (created earlier)
+Navigate to the data-catalogue repository and run the custom script: geonetwork_build.xml. This is an ant build script and will copy all required custom content into the build branch of the geonetwork repository (created earlier).
 
 - `cd data-catalogue`
-- `ant -buildfile mi_geonetwork_build.xml`
+- `ant -buildfile geonetwork_build.xml`
 
 The build (copy files) should complete successfully.
 

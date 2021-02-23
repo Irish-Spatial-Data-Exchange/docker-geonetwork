@@ -19,10 +19,14 @@ RUN apt-get update -qqy \
     git \
     build-essential \
     less nano \
-    rsync \
-    # Set environment variables
-    ENV GN_FILE geonetwork.war
+    rsync 
+
 ENV BASE_DIR /usr/local/tomcat
+
+RUN WGET https://sourceforge.net/projects/geonetwork/files/latest/download
+
+# Set environment variables
+ENV GN_FILE geonetwork.war
 
 # Set working directory
 WORKDIR $BASE_DIR/webapps
